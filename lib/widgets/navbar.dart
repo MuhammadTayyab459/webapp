@@ -19,7 +19,9 @@ class navbar extends StatefulWidget {
 }
 
 class _navbarState extends State<navbar> {
+
   bool dropDownEnabled = false;
+
   // String name = "Platform";
   // String nmae2 = 'Resources';
   // var items = ['Experiment Managment', 'Workspaces', 'Panels'];
@@ -34,6 +36,7 @@ class _navbarState extends State<navbar> {
       context: context,
       position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.55,
           50, MediaQuery.of(context).size.width * 0.55, 0),
+
       items: [
         PopupMenuItem(
           child: ListTile(
@@ -64,7 +67,6 @@ class _navbarState extends State<navbar> {
   }
 
   showMenus(BuildContext buildContext) {
-    // final RelativeRect position = buttonMenuPosition(buildContext);
     showMenu(
       context: context,
       position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.475,
