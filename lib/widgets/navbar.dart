@@ -19,14 +19,57 @@ class navbar extends StatefulWidget {
 }
 
 class _navbarState extends State<navbar> {
+  RelativeRect buttonMenuPosition(BuildContext context) {
+    final RenderBox bar = context.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context)!.context.findRenderObject() as RenderBox;
+    const Offset offset = Offset.zero;
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        bar.localToGlobal(bar.size.centerRight(offset), ancestor: overlay),
+        bar.localToGlobal(bar.size.centerRight(offset), ancestor: overlay),
+      ),
+      offset & overlay.size,
+    );
+    return position;
+  }
+
   // String name = "Platform";
   // String nmae2 = 'Resources';
   // var items = ['Experiment Managment', 'Workspaces', 'Panels'];
   // var items2 = ['Documentation', 'FAQ', 'Blog'];
-  showMenus() {
+
+  showMenus2(BuildContext context) {
+    final RenderBox bar = context.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context)!.context.findRenderObject() as RenderBox;
+
     showMenu(
       context: context,
-      position: RelativeRect.fromLTRB(300, 30, 50, 0),
+      position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.55,
+          50, MediaQuery.of(context).size.width * 0.55, 0),
+      // _tapPosition & Size(40, 40), // smaller rect, the touch area
+      // Offset.zero & overlay.size //igger rect, the entire screen
+      items: [
+        PopupMenuItem(
+          child: Text("Documentation"),
+        ),
+        PopupMenuItem(
+          child: Text("FAQ"),
+        ),
+        PopupMenuItem(
+          child: Text("Blog"),
+        ),
+      ],
+    );
+  }
+
+  showMenus(BuildContext buildContext) {
+    final RelativeRect position = buttonMenuPosition(buildContext);
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.475,
+          50, MediaQuery.of(context).size.width * 0.55, 0),
       items: [
         PopupMenuItem(
           child: Text("Experiance"),
@@ -41,22 +84,11 @@ class _navbarState extends State<navbar> {
     );
   }
 
-  showMenus2(BuildContext context) {
-    showMenu(
-      context: context,
-      position: RelativeRect.fromLTRB(050, 0, 50, 0),
-      items: [
-        PopupMenuItem(
-          child: Text("Documentation"),
-        ),
-        PopupMenuItem(
-          child: Text("FAQ"),
-        ),
-        PopupMenuItem(
-          child: Text("Blog"),
-        ),
-      ],
-    );
+  var _tapPosition;
+  @override
+  void initState() {
+    _tapPosition = Offset(0.0, 0.0);
+    super.initState();
   }
 
   @override
@@ -172,7 +204,7 @@ class _navbarState extends State<navbar> {
                 child: MouseRegion(
                   //cursor: MouseCursor.uncontrolled,
                   //onExit: (event) => !(showMenus(context)),
-                  onHover: (event) => showMenus(),
+                  onHover: (event) => showMenus(context),
                   child: Text(
                     "Resources ",
                     style: TextStyle(color: Colors.white, fontSize: 20),
