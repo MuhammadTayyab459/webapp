@@ -19,20 +19,8 @@ class navbar extends StatefulWidget {
 }
 
 class _navbarState extends State<navbar> {
-  RelativeRect buttonMenuPosition(BuildContext context) {
-    final RenderBox bar = context.findRenderObject() as RenderBox;
-    final RenderBox overlay =
-        Overlay.of(context)!.context.findRenderObject() as RenderBox;
-    const Offset offset = Offset.zero;
-    final RelativeRect position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        bar.localToGlobal(bar.size.centerRight(offset), ancestor: overlay),
-        bar.localToGlobal(bar.size.centerRight(offset), ancestor: overlay),
-      ),
-      offset & overlay.size,
-    );
-    return position;
-  }
+
+  bool dropDownEnabled = false;
 
   // String name = "Platform";
   // String nmae2 = 'Resources';
@@ -48,37 +36,65 @@ class _navbarState extends State<navbar> {
       context: context,
       position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.55,
           50, MediaQuery.of(context).size.width * 0.55, 0),
-      // _tapPosition & Size(40, 40), // smaller rect, the touch area
-      // Offset.zero & overlay.size //igger rect, the entire screen
+
       items: [
         PopupMenuItem(
-          child: Text("Documentation"),
+          child: ListTile(
+            title: Text("Documentation"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
         PopupMenuItem(
-          child: Text("FAQ"),
+          child: ListTile(
+            title: Text("FAQs"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
         PopupMenuItem(
-          child: Text("Blog"),
+          child: ListTile(
+            title: Text("Blog"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
       ],
     );
   }
 
   showMenus(BuildContext buildContext) {
-    final RelativeRect position = buttonMenuPosition(buildContext);
     showMenu(
       context: context,
       position: RelativeRect.fromLTRB(MediaQuery.of(context).size.width * 0.475,
           50, MediaQuery.of(context).size.width * 0.55, 0),
       items: [
         PopupMenuItem(
-          child: Text("Experiance"),
+          child: ListTile(
+            title: Text("Experiance"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
         PopupMenuItem(
-          child: Text("Workspace"),
+          child: ListTile(
+            title: Text("Workspace"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
         PopupMenuItem(
-          child: Text("Panles"),
+          child: ListTile(
+            title: Text("Panles"),
+            trailing: Icon(
+              Icons.arrow_forward_ios_rounded,
+            ),
+          ),
         ),
       ],
     );
@@ -202,12 +218,28 @@ class _navbarState extends State<navbar> {
                 hoverColor: Colors.black,
                 borderSide: BorderSide.none,
                 child: MouseRegion(
-                  //cursor: MouseCursor.uncontrolled,
-                  //onExit: (event) => !(showMenus(context)),
-                  onHover: (event) => showMenus(context),
-                  child: Text(
-                    "Resources ",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  cursor: MouseCursor.uncontrolled,
+                  // onExit: (event) {
+                  //   setState(() {
+                  //     dropDownEnabled = !dropDownEnabled;
+                  //   });
+                  // },
+                  onHover: (event) {
+                    setState(() {
+                      dropDownEnabled = !dropDownEnabled;
+                    });
+                    showMenus(context);
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        "Resources ",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      dropDownEnabled
+                          ? Icon(Icons.arrow_drop_down)
+                          : Icon(Icons.arrow_forward_ios_rounded)
+                    ],
                   ),
                 ),
               ),
